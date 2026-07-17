@@ -1,10 +1,12 @@
 package com.example.dpi.parser;
 import com.example.dpi.models.Packet;
+import java.util.concurrent.TimeoutException;
 
 import org.pcap4j.core.*;
 import org.pcap4j.packet.*;
 import org.pcap4j.packet.namednumber.IpNumber;
 
+import java.io.EOFException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class PacketParser {
                 long timestamp = handle.getTimestamp().getTime();
 
                 IpV4Packet ipV4Packet = rawPacket.get(IpV4Packet.class);
+
                 if (ipV4Packet == null) {
                     continue;
                 }
@@ -65,13 +68,16 @@ public class PacketParser {
                         payload,
                         size
                 );
-
+                System.out.println("Packet Added");
                 parsedPackets.add(packet);
             }
 
             handle.close();
 
-        } catch (PcapNativeException | NotOpenException | java.io.EOFException e) {
+        } catch (EOFException e) {
+    // End of PCAP file reached normally
+        }
+        catch (PcapNativeException | NotOpenException | TimeoutException e) {
             e.printStackTrace();
         }
 

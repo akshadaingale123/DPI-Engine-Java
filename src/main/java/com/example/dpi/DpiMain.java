@@ -1,9 +1,20 @@
 package com.example.dpi;
 
+import java.util.HashMap;
+
+
+import com.example.dpi.statistics.StatisticsEngine;
+import com.example.dpi.report.ReportGenerator;
+
+
+
 import com.example.dpi.models.Packet;
+import com.example.dpi.analyzer.TrafficAnalyzer;
 import com.example.dpi.connection.Connection;
 import com.example.dpi.parser.PacketParser;
+
 import com.example.dpi.tracker.ConnectionTracker;
+
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +42,22 @@ public class DpiMain {
 
         // 4. Get all tracked connections
         Map<String, Connection> connections = tracker.getAllConnections();
+        Map<String, Long> sourceTraffic =
+                TrafficAnalyzer.sourceTraffic(connections);
+                Map.Entry<String, Long> topSource =
+                    TrafficAnalyzer.findTopEntry(sourceTraffic);
+
+                System.out.println("\nTop Source IP");
+                System.out.println("-------------");
+                System.out.println("IP: " + topSource.getKey());
+                System.out.println("Traffic: " + topSource.getValue() + " bytes");
+
+        System.out.println("\nSource IP Traffic");
+        System.out.println("------------------");
+
+        for (Map.Entry<String, Long> entry : sourceTraffic.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue() + " bytes");
+        }
 
         // 5. Print summary of each connection
         int index = 1;
@@ -45,6 +72,7 @@ public class DpiMain {
             System.out.println("Source Port: " + connection.getSourcePort());
             System.out.println("Destination Port: " + connection.getDestinationPort());
             System.out.println("Protocol: " + connection.getProtocol());
+            System.out.println("Application: " + connection.getApplication());
             System.out.println("Packet Count: " + connection.getPacketCount());
             System.out.println("Total Bytes: " + connection.getTotalBytes());
             System.out.println("Start Time: " + connection.getStartTime());
@@ -53,5 +81,12 @@ public class DpiMain {
         }
 
         System.out.println("Total unique connections: " + tracker.getConnectionCount());
+        Map<String, Object> report =
+        StatisticsEngine.generateStatistics(
+                packets,
+                connections
+        );
+
+        ReportGenerator.generateReport(report);
     }
 }

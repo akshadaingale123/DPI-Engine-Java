@@ -9,6 +9,7 @@ public class Connection {
     private int sourcePort;
     private int destinationPort;
     private String protocol;
+    private String application;
 
     private long startTime;
     private long lastSeenTime;
@@ -24,6 +25,7 @@ public class Connection {
         this.sourcePort = sourcePort;
         this.destinationPort = destinationPort;
         this.protocol = protocol;
+        this.application = "UNKNOWN";
         this.startTime = startTime;
         this.lastSeenTime = startTime;
         this.totalBytes = 0;
@@ -49,6 +51,14 @@ public class Connection {
 
     public String getProtocol() {
         return protocol;
+    }
+
+    public String getApplication() {
+        return application;
+    }
+
+    public void setApplication(String application) {
+        this.application = application;
     }
 
     public long getStartTime() {

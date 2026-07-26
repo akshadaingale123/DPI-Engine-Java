@@ -1,15 +1,18 @@
 package com.example.dpi.tracker;
 import com.example.dpi.models.Packet;
 import com.example.dpi.connection.Connection;
+import com.example.dpi.rules.RuleEngine;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionTracker {
 
     private Map<String, Connection> connections;
+    private RuleEngine ruleEngine;
 
     public ConnectionTracker() {
         this.connections = new HashMap<>();
+        this.ruleEngine = new RuleEngine();
     }
 
     // Builds the five-tuple key for a given packet
@@ -35,6 +38,9 @@ public class ConnectionTracker {
                     packet.getProtocol(),
                     packet.getTimestamp()
             );
+            String application = ruleEngine.detectApplication(packet);
+            newConnection.setApplication(application);
+            
             newConnection.addPacketInfo(packet.getTimestamp(), packet.getSize());
             connections.put(key, newConnection);
         }

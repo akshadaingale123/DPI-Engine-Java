@@ -1,0 +1,14 @@
+{
+  "totalConnections" : 43,
+  "averageBytesPerConnection" : 133.44,
+  "topDestinationIP" : "192.168.1.100",
+  "totalBytes" : 5738,
+  "protocols" : {
+    "HTTPS" : 37,
+    "DNS" : 4,
+    "HTTP" : 2
+  },
+  "totalPackets" : 77,
+  "topSourceIP" : "192.168.1.100",
+  "topApplication" : "HTTPS"
+}

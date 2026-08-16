@@ -1,10 +1,10 @@
 {
-  "totalConnections" : 43,
-  "averageBytesPerConnection" : 133.44,
-  "topDestinationIP" : "192.168.1.100",
+  "totalConnections" : 27,
+  "averageBytesPerConnection" : 212.52,
+  "topDestinationIP" : "192.0.78.24",
   "totalBytes" : 5738,
   "protocols" : {
-    "HTTPS" : 37,
+    "HTTPS" : 21,
     "DNS" : 4,
     "HTTP" : 2
   },

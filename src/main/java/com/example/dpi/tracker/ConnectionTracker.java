@@ -15,11 +15,24 @@ public class ConnectionTracker {
         this.ruleEngine = new RuleEngine();
     }
 
-    // Builds the five-tuple key for a given packet
+    // Builds a direction-independent five-tuple key for a given packet.
+    // A->B and B->A will always produce the SAME key.
     public String buildKey(Packet packet) {
-        return packet.getSourceIP() + ":" + packet.getSourcePort() + "->" +
-               packet.getDestinationIP() + ":" + packet.getDestinationPort() +
-               ":" + packet.getProtocol();
+        String endpointA = packet.getSourceIP() + ":" + packet.getSourcePort();
+        String endpointB = packet.getDestinationIP() + ":" + packet.getDestinationPort();
+
+        String firstEndpoint;
+        String secondEndpoint;
+
+        if (endpointA.compareTo(endpointB) <= 0) {
+            firstEndpoint = endpointA;
+            secondEndpoint = endpointB;
+        } else {
+            firstEndpoint = endpointB;
+            secondEndpoint = endpointA;
+        }
+
+        return firstEndpoint + "<->" + secondEndpoint + ":" + packet.getProtocol();
     }
 
     // Takes a packet and updates or creates a Connection for it
@@ -40,7 +53,7 @@ public class ConnectionTracker {
             );
             String application = ruleEngine.detectApplication(packet);
             newConnection.setApplication(application);
-            
+
             newConnection.addPacketInfo(packet.getTimestamp(), packet.getSize());
             connections.put(key, newConnection);
         }

@@ -2,6 +2,8 @@ package com.example.dpi;
 
 import java.util.HashMap;
 
+import com.example.dpi.analyzer.Alert;
+import com.example.dpi.analyzer.DetectionEngine;
 
 import com.example.dpi.statistics.StatisticsEngine;
 import com.example.dpi.report.ReportGenerator;
@@ -81,6 +83,15 @@ public class DpiMain {
         }
 
         System.out.println("Total unique connections: " + tracker.getConnectionCount());
+        List<Alert> alerts =
+                DetectionEngine.detectPortScans(connections);
+
+        System.out.println("\nSecurity Alerts");
+        System.out.println("----------------");
+
+        for (Alert alert : alerts) {
+            System.out.println(alert);
+        }
         Map<String, Object> report =
         StatisticsEngine.generateStatistics(
                 packets,

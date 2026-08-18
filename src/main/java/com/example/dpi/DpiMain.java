@@ -85,6 +85,7 @@ public class DpiMain {
         System.out.println("Total unique connections: " + tracker.getConnectionCount());
         List<Alert> alerts =
                 DetectionEngine.detectPortScans(connections);
+                
 
         System.out.println("\nSecurity Alerts");
         System.out.println("----------------");
@@ -92,6 +93,7 @@ public class DpiMain {
         for (Alert alert : alerts) {
             System.out.println(alert);
         }
+        
         Map<String, Object> report =
         StatisticsEngine.generateStatistics(
                 packets,

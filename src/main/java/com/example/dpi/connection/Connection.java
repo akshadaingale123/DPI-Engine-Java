@@ -16,6 +16,10 @@ public class Connection {
     private long totalBytes;
     private int packetCount;
 
+
+    private long forwardBytes;
+    private long reverseBytes;
+
     // Constructor
     public Connection(String sourceIP, String destinationIP,
                        int sourcePort, int destinationPort,
@@ -30,6 +34,8 @@ public class Connection {
         this.lastSeenTime = startTime;
         this.totalBytes = 0;
         this.packetCount = 0;
+        this.forwardBytes = 0;
+        this.reverseBytes = 0;
     }
 
     // Getters
@@ -77,6 +83,14 @@ public class Connection {
         return packetCount;
     }
 
+    public long getForwardBytes() {
+        return forwardBytes;
+    }
+
+    public long getReverseBytes() {
+        return reverseBytes;
+    }
+
     // Setters
     public void setLastSeenTime(long lastSeenTime) {
         this.lastSeenTime = lastSeenTime;
@@ -95,6 +109,22 @@ public class Connection {
         this.lastSeenTime = packetTime;
         this.totalBytes += packetSize;
         this.packetCount += 1;
+    }
+
+    public void addPacketInfo(
+            long packetTime,
+            int packetSize,
+            boolean forwardDirection) {
+
+        this.lastSeenTime = packetTime;
+        this.totalBytes += packetSize;
+        this.packetCount++;
+
+        if (forwardDirection) {
+            this.forwardBytes += packetSize;
+        } else {
+            this.reverseBytes += packetSize;
+        }
     }
 
     // toString method

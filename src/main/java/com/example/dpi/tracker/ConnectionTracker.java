@@ -40,8 +40,20 @@ public class ConnectionTracker {
         String key = buildKey(packet);
 
         if (connections.containsKey(key)) {
+
             Connection existingConnection = connections.get(key);
-            existingConnection.addPacketInfo(packet.getTimestamp(), packet.getSize());
+
+            boolean forwardDirection =
+                    packet.getSourceIP().equals(existingConnection.getSourceIP())
+                    && packet.getSourcePort() == existingConnection.getSourcePort()
+                    && packet.getDestinationIP().equals(existingConnection.getDestinationIP())
+                    && packet.getDestinationPort() == existingConnection.getDestinationPort();
+
+            existingConnection.addPacketInfo(
+                    packet.getTimestamp(),
+                    packet.getSize(),
+                    forwardDirection
+            );
         } else {
             Connection newConnection = new Connection(
                     packet.getSourceIP(),

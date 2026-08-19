@@ -84,7 +84,8 @@ public class DpiMain {
 
         System.out.println("Total unique connections: " + tracker.getConnectionCount());
         List<Alert> alerts =
-                DetectionEngine.detectPortScans(connections);
+                DetectionEngine.analyze(connections);
+                
                 
 
         System.out.println("\nSecurity Alerts");
